@@ -139,21 +139,45 @@ function App() {
 
   if (gridConfig.cols === 0) return null;
 
+  const voidGalaLogo = `
+ ██╗   ██╗ ██████╗ ██╗██████╗      ██████╗  █████╗ ██╗      █████╗ 
+ ██║   ██║██╔═══██╗██║██╔══██╗    ██╔════╝ ██╔══██╗██║     ██╔══██╗
+ ██║   ██║██║   ██║██║██║  ██║    ██║  ███╗███████║██║     ███████║
+ ╚██╗ ██╔╝██║   ██║██║██║  ██║    ██║   ██║██╔══██║██║     ██╔══██║
+  ╚████╔╝ ╚██████╔╝██║██████╔╝    ╚██████╔╝██║  ██║███████╗██║  ██║
+   ╚═══╝   ╚═════╝ ╚═╝╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+`;
+
+  // O fogo viaja de offset 0.2 (base) até 0.8 (topo). A janela é 0.25.
+  // Calculamos a posição física do fogo na tela (0% a 100%)
+  const effectiveScrollWipe = scrollProgress * 1.25;
+  const fireCenter = effectiveScrollWipe - 0.125;
+  const screenWipe = ((fireCenter - 0.2) / 0.6) * 100;
+
   return (
     <div className="app-container">
-      {/* O background escondido, fundo azul sólido como solicitado */}
+      {/* O background escondido com o logo no CENTRO */}
       <div className="hidden-background">
-        {/* Fundo liso sem elementos extras por enquanto */}
+        <pre className="ascii-logo">{voidGalaLogo}</pre>
       </div>
 
       {/* Container invisível para dar área de rolagem (scroll) */}
       <div className="scroll-space"></div>
 
-      {/* A carta fixada no centro do "quadro branco" */}
-      <div className="letter-container">
-        <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
-        <p>We congratulate the developers who transform limitations into radical innovation. The works listed here are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
-        <p>In this niche, low-level execution is the highest form of art.</p>
+      {/* Wrapper full-screen que aplica uma máscara de apagamento sincronizada com o fogo.
+          Isso faz com que o texto desapareça EXATAMENTE junto com os quadrados brancos! */}
+      <div 
+        className="letter-wrapper"
+        style={{
+          WebkitMaskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`,
+          maskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`
+        }}
+      >
+        <div className="letter-container">
+          <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
+          <p>We congratulate the developers who transform limitations into radical innovation. The works listed here are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
+          <p>In this niche, low-level execution is the highest form of art.</p>
+        </div>
       </div>
 
       {/* 

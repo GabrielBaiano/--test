@@ -18,6 +18,25 @@
   height: 100vh;
   background-color: #0033aa; /* Fundo base é azul */
   z-index: 1; /* Fica por baixo de tudo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* O logo ASCII no estilo LazyVim revelado pelo fogo */
+.ascii-logo {
+  position: absolute;
+  top: 50%; /* Voltou para o centro absoluto! */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
+  font-size: clamp(6px, 1.2vw, 24px); /* Escala responsivamente para caber na tela */
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Brilho leve tipo neon */
+  margin: 0;
+  pointer-events: none;
+  font-weight: bold;
 }
 
 /* =========================================
@@ -52,10 +71,21 @@
   background-color: #ffffff; /* O bloco preenchido inicial é branco sólido */
 }
 
+/* Wrapper invisível que sincroniza a queima do texto */
+.letter-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 15; /* Fica acima da overlay de azulejos brancos */
+  pointer-events: none;
+}
+
 /* O texto da carta fixado no centro */
 .letter-container {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 50%; /* Voltou para o centro absoluto! */
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
