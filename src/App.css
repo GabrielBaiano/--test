@@ -1,0 +1,53 @@
+.app-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Criamos um espaço gigante para o scroll fluir com calma */
+.scroll-space {
+  height: 600vh;
+  width: 100%;
+}
+
+/* O fundo escondido. Fixo na tela, fundo azul estilo azulejo cobalto */
+.hidden-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0033aa; /* Azul profundo característico de azulejos */
+  z-index: 1; /* Fica por baixo da camada branca */
+}
+
+/* =========================================
+   A MÁGICA DA CAMADA BRANCA E BOLAS
+========================================== */
+.white-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none; /* Ignora cliques para podermos interagir com o fundo */
+  overflow: hidden;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  /* Incluindo Fira Code na stack de fontes como solicitado */
+  font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
+  font-size: 26px; /* Ajustado para preencher perfeitamente os novos blocos de 24px */
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap; /* Evita que os caracteres duplos '▓▓' quebrem linha */
+  letter-spacing: 0;
+}
+
+.tile.solid {
+  background-color: #ffffff;
+}
