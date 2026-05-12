@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body, html { margin: 0; padding: 0; width: 100%; height: 100%; }
+  .halftone-bg {
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffcc00; /* Yellow */
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .halftone-wrapper {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #dddddd; /* Background light gray */
+    mix-blend-mode: multiply; /* Will apply B&W to Yellow */
+  }
+  
+  .halftone-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20vw;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 900;
+    color: #444444; /* Dark gray text */
+    text-transform: lowercase;
+    filter: blur(12px);
+    white-space: nowrap;
+    text-align: center;
+    line-height: 0.8;
+  }
+  
+  .halftone-pattern {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #000 0%, #fff 70%);
+    background-size: 16px 16px;
+    mix-blend-mode: hard-mix;
+  }
+</style>
+</head>
+<body>
+  <div class="halftone-bg">
+    <div class="halftone-wrapper">
+      <div class="halftone-text">void<br>gala</div>
+      <div class="halftone-pattern"></div>
+    </div>
+  </div>
+</body>
+</html>

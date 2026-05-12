@@ -1,19 +1,21 @@
-.app-container {
-  position: relative;
-  width: 100%;
+/* RESET BÁSICO */
+* {
+  box-sizing: border-box;
 }
 
-/* Criamos um espaço gigante para o scroll fluir com calma */
-.scroll-space {
-  height: 600vh;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* Previne bordas brancas */
+  font-family: "Fira Code", Consolas, monospace;
 }
 
 /* =========================================
-   ESTRUTURA DE SCROLL STICKY
+   ESTRUTURA DE SCROLL E CAMADAS
 ========================================== */
-.intro-section {
+.app-container {
+  position: relative;
   width: 100%;
-  height: 450vh; /* 100vh visível + 200vh de animação + 150vh de respiro parado */
 }
 
 .sticky-container {
@@ -24,151 +26,130 @@
   overflow: hidden;
 }
 
-/* O fundo base. Ocupa 100% do container sticky */
-.hidden-background {
+.screen-layer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0033aa; /* Fundo base é azul */
-  z-index: 1; /* Fica por baixo de tudo */
   display: flex;
-  flex-direction: column; /* Empilha o logo e o texto de boas-vindas */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 5%;
 }
 
-/* O logo ASCII no estilo LazyVim revelado pelo fogo */
-.ascii-logo {
-  color: #ffffff;
-  font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
-  font-size: clamp(6px, 1.2vw, 24px); /* Escala responsivamente para caber na tela */
-  line-height: 1.1;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Brilho leve tipo neon */
-  margin: 0;
-  pointer-events: none;
-  font-weight: bold;
+.layer-bottom {
+  z-index: 1; /* Fica no fundo, apenas esperando ser revelada */
 }
 
-/* Texto de boas vindas abaixo do logo */
-.welcome-text {
-  color: #ffffff;
-  font-family: "Press Start 2P", "Fira Code", monospace; /* Fonte 8-bit para combinar com a estética */
-  font-size: clamp(8px, 0.9vw, 14px);
-  text-align: center;
-  margin-top: 50px;
-  line-height: 2;
-  opacity: 0.9;
-  max-width: 800px;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+.layer-middle {
+  z-index: 3; /* Fica no TOPO para garantir que o texto seja visível e apagado pela máscara */
 }
 
-.welcome-text p {
-  margin: 10px 0;
+.layer-top {
+  z-index: 2; /* Grid de azulejos ASCII logo abaixo do texto */
 }
 
 /* =========================================
-   A MÁGICA DA CAMADA BRANCA E BOLAS
-==========================================/* A camada transparente que segura o grid */
-.white-overlay {
+   GRID DO EFEITO DE FOGO ASCII
+========================================== */
+.tile-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
   pointer-events: none;
-  overflow: hidden;
 }
 
 .tile {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff; /* Os caracteres da queima voltam a ser BRANCOS */
-  /* Incluindo Fira Code na stack de fontes como solicitado */
+  color: var(--peel-char-color);
   font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
-  font-size: 26px; /* Ajustado para preencher perfeitamente os novos blocos de 24px */
+  font-size: 26px; /* Tamanho ajustado para o cellSize de 24px */
   line-height: 1;
   overflow: hidden;
-  white-space: nowrap; /* Evita que os caracteres duplos '▓▓' quebrem linha */
-  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .tile.solid {
-  background-color: #ffffff; /* O bloco preenchido inicial é branco sólido */
+  background-color: var(--peel-bg-color);
 }
 
 /* =========================================
-   CONTEÚDO PRINCIPAL (APÓS A INTRO)
+   COMPONENTES DAS TELAS (SCREENS)
 ========================================== */
-.main-content {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #0033aa; /* Continuação do fundo azul da intro */
-  color: #ffffff;
-  padding: 80px 5%;
-  font-family: "Fira Code", Consolas, monospace;
-  box-sizing: border-box;
-}
 
-.main-content h2 {
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(14px, 2vw, 24px);
-  margin-bottom: 60px;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.category {
-  margin-bottom: 50px;
-  max-width: 800px;
-}
-
-.category h3 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #ffcc00; /* Cor de destaque retro */
-}
-
-.category p {
-  font-size: 16px;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
-/* Wrapper invisível que sincroniza a queima do texto */
-.letter-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 15; /* Fica acima da overlay de azulejos brancos */
-  pointer-events: none;
-}
-
-/* O texto da carta fixado no centro */
+/* TELA 1: A CARTA MANIFESTO (LETTER) */
 .letter-container {
-  position: absolute;
-  top: 50%; /* Voltou para o centro absoluto! */
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 90%;
   max-width: 1000px;
   text-align: center;
   font-family: 'Press Start 2P', system-ui, monospace;
   font-size: clamp(10px, 1.4vw, 18px);
   line-height: 2;
-  color: #0033aa; 
-  z-index: 15; /* Fica ACIMA da overlay de azulejos brancos (z-index: 10) */
-  pointer-events: none;
 }
-
 .letter-container p {
   margin-bottom: 2rem;
 }
 
-.letter-container p:last-child {
-  margin-bottom: 0;
+/* TELA 2: LOGO VOID GALA E BOAS VINDAS */
+.logo-screen-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* O logo ASCII restaurado */
+.ascii-logo {
+  color: #ffffff;
+  font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
+  font-size: clamp(6px, 1.2vw, 24px); /* Escala responsivamente */
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Brilho neon */
+  margin: 0 0 50px 0;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.welcome-text {
+  font-family: "Press Start 2P", "Fira Code", monospace;
+  font-size: clamp(8px, 1vw, 14px);
+  line-height: 2;
+  opacity: 0.9;
+  max-width: 700px;
+}
+
+/* TELAS DE CATEGORIA */
+.category-screen {
+  max-width: 800px;
+  text-align: center;
+}
+
+.cat-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(24px, 4vw, 50px);
+  margin-bottom: 15px;
+  /* Sombra leve para dar um pequeno "pop" 3D do fundo escuro */
+  text-shadow: 4px 4px 0px rgba(0,0,0,0.8);
+}
+
+.cat-subtitle {
+  font-family: "Fira Code", monospace;
+  font-size: clamp(14px, 2vw, 22px);
+  font-weight: 600;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.cat-desc {
+  font-family: "Fira Code", monospace;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.6;
+  opacity: 0.8;
 }

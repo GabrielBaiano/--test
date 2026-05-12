@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0033aa; }
+  
+  .halftone-wrapper {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    mix-blend-mode: screen; /* Black -> transparent (blue), White -> White */
+    overflow: hidden;
+  }
+  
+  .cloud-source {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    /* Use SVG filter for clouds */
+    filter: url(#cloud-noise) contrast(2) brightness(0.8);
+  }
+  
+  .halftone-pattern {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #fff 0%, #000 100%);
+    background-size: 10px 10px;
+    mix-blend-mode: hard-mix;
+  }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute;">
+    <filter id="cloud-noise">
+      <!-- High contrast fractal noise for fluffy clouds -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="5" result="noise" />
+      <feColorMatrix type="matrix" values="
+        1 0 0 0 0
+        1 0 0 0 0
+        1 0 0 0 0
+        0 0 0 1 0" in="noise" />
+    </filter>
+  </svg>
+
+  <div class="halftone-wrapper">
+    <div class="cloud-source"></div>
+    <div class="halftone-pattern"></div>
+  </div>
+</body>
+</html>

@@ -1,41 +1,101 @@
 import { useEffect, useState, useMemo } from 'react';
 import './App.css';
 
-// Sequência de caracteres geométricos e "shades" que imitam estampas de azulejo.
-// Sequência de caracteres originais (do branco sólido para o transparente).
-// Isso garante que os caracteres brancos "rasguem" em direção ao fundo azul,
-// e não o contrário, mantendo a estética perfeita.
 const TILE_CHARS = [
   'solid', 
-  
-  // Degradê FiraCode mais curto
   '▓▓', '▓▓', 
   '▒▒', '▒▒', 
   '░░', '░░', 
-  
-  // Desconstrução
-  '▦', 
-  '▣', 
-  '□', 
-  '◈', 
-  '◇', 
-  '❖', 
-  '✥', 
-  '+', 
-  '·', 
-  ' '      
+  '▦', '▣', '□', '◈', '◇', '❖', '✥', '+', '·', ' '      
+];
+
+const voidGalaLogo = `
+ ██╗   ██╗ ██████╗ ██╗██████╗      ██████╗  █████╗ ██╗      █████╗ 
+ ██║   ██║██╔═══██╗██║██╔══██╗    ██╔════╝ ██╔══██╗██║     ██╔══██╗
+ ██║   ██║██║   ██║██║██║  ██║    ██║  ███╗███████║██║     ███████║
+ ╚██╗ ██╔╝██║   ██║██║██║  ██║    ██║   ██║██╔══██║██║     ██╔══██║
+  ╚████╔╝ ╚██████╔╝██║██████╔╝    ╚██████╔╝██║  ██║███████╗██║  ██║
+   ╚═══╝   ╚═════╝ ╚═╝╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+`;
+
+// O NOVO SISTEMA: Todas as telas são definidas aqui.
+// O efeito de "peeling" funciona como uma transição contínua entre elas.
+const SCREENS = [
+  {
+    id: 'intro-letter',
+    bgColor: '#ffffff',
+    charColor: '#ffffff', // Cor dos caracteres da transição
+    textColor: '#0033aa',
+    content: (
+      <div className="letter-container">
+        <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
+        <p>We congratulate the developers who transform limitations into radical innovation. The works listed here, chosen directly by our community, are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
+        <p>In this niche, low-level execution is the highest form of art.</p>
+      </div>
+    )
+  },
+  {
+    id: 'logo-screen',
+    bgColor: '#0033aa',
+    charColor: '#0033aa',
+    textColor: '#ffffff',
+    content: (
+      <div className="logo-screen-content">
+        <pre className="ascii-logo">{voidGalaLogo}</pre>
+        <div className="welcome-text">
+          <p>WELCOME TO THE 2025 VOID_GALA, THE FIRST EDITION OF OUR MANIFESTO. DISCOVER THIS YEAR'S CATEGORIES BELOW.</p>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: 'category-1',
+    bgColor: '#ff5500', // Laranja vibrante
+    charColor: '#ff5500',
+    textColor: '#ffffff', // Texto branco para contrastar com o laranja
+    content: (
+      <div className="category-screen">
+        <h2 className="cat-title">1. RE_VIRTUAL</h2>
+        <h3 className="cat-subtitle">Demakes & Retro-Horror</h3>
+        <p className="cat-desc">O auge da estética 32-bit: texturas tremidas, câmeras fixas e horror industrial.</p>
+      </div>
+    )
+  },
+  {
+    id: 'category-2',
+    bgColor: '#220000',
+    charColor: '#220000',
+    textColor: '#ff4444',
+    content: (
+      <div className="category-screen">
+        <h2 className="cat-title">2. KERNEL_MASTER</h2>
+        <h3 className="cat-subtitle">Terminal & ASCII Excellence</h3>
+        <p className="cat-desc">Processamento puro. Onde o código se torna arte sem precisar de um único polígono.</p>
+      </div>
+    )
+  },
+  {
+    id: 'category-3',
+    bgColor: '#002211',
+    charColor: '#002211',
+    textColor: '#44ff44',
+    content: (
+      <div className="category-screen">
+        <h2 className="cat-title">3. DITHER_GLORY</h2>
+        <h3 className="cat-subtitle">1-Bit & Brutalist Aesthetics</h3>
+        <p className="cat-desc">A beleza do alto contraste e da limitação binária.</p>
+      </div>
+    )
+  }
 ];
 
 function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [gridConfig, setGridConfig] = useState({ cols: 0, rows: 0, cellSize: 40 });
+  const [scrollY, setScrollY] = useState(0);
+  const [gridConfig, setGridConfig] = useState({ cols: 0, rows: 0, cellSize: 24 });
 
   useEffect(() => {
     const updateGrid = () => {
-      // Diminuindo o tamanho da célula (de 40 para 24) para 
-      // multiplicar a quantidade de quadrados e aumentar a resolução!
       const cellSize = 24; 
-      // +1 para garantir que preencha até a borda sem falhas
       const cols = Math.ceil(window.innerWidth / cellSize) + 1;
       const rows = Math.ceil(window.innerHeight / cellSize) + 1;
       setGridConfig({ cols, rows, cellSize });
@@ -48,44 +108,31 @@ function App() {
 
   useEffect(() => {
     let ticking = false;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          // A animação de intro agora é baseada em uma distância fixa de 200vh
-          const introScrollDistance = window.innerHeight * 2;
-          const progress = introScrollDistance > 0 ? scrollY / introScrollDistance : 0;
-          setScrollProgress(Math.min(Math.max(progress, 0), 1));
+          setScrollY(window.scrollY);
           ticking = false;
         });
         ticking = true;
       }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Forçar uma atualização inicial segura
-    window.requestAnimationFrame(() => {
-      handleScroll();
-    });
+    window.requestAnimationFrame(() => handleScroll());
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Gera as células do grid usando ruído orgânico avançado (FBM - Fractal Brownian Motion)
-  // Isso remove completamente o formato "gráfico de senoide" e cria manchas como nuvens.
   const cells = useMemo(() => {
     const { cols, rows } = gridConfig;
     if (cols === 0 || rows === 0) return [];
 
-    // Função de hash pseudo-aleatória clássica
     const hash = (x: number, y: number) => {
       let h = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453123;
       return h - Math.floor(h);
     };
 
-    // Value Noise 2D suave (interpolação cúbica para curvas orgânicas)
     const smoothNoise = (x: number, y: number) => {
       const ix = Math.floor(x);
       const iy = Math.floor(y);
@@ -104,7 +151,6 @@ function App() {
              (v01 * (1 - ux) + v11 * ux) * uy;
     };
 
-    // FBM mistura 3 camadas (octaves) de ruído para dar detalhe e complexidade às "chamas"
     const fbm = (x: number, y: number) => {
       let v = 0;
       let a = 0.5;
@@ -114,19 +160,14 @@ function App() {
         f *= 2.0;
         a *= 0.5;
       }
-      return v; // Retorna valor entre aprox 0.0 e 1.0
+      return v; 
     };
 
     const items = [];
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         const rowRatio = y / Math.max(rows - 1, 1);
-        
-        // BaseOffset: define a progressão vertical do fogo (de 0.2 até 0.8)
         const baseOffset = 0.2 + ((1 - rowRatio) * 0.6);
-        
-        // Escala 0.08 define o tamanho das "manchas" orgânicas.
-        // Multiplicar por 0.35 faz com que as manchas invadam a área das outras.
         const organicNoise = (fbm(x * 0.08, y * 0.08) - 0.5) * 0.35;
         
         items.push({
@@ -140,62 +181,72 @@ function App() {
 
   if (gridConfig.cols === 0) return null;
 
-  const voidGalaLogo = `
- ██╗   ██╗ ██████╗ ██╗██████╗      ██████╗  █████╗ ██╗      █████╗ 
- ██║   ██║██╔═══██╗██║██╔══██╗    ██╔════╝ ██╔══██╗██║     ██╔══██╗
- ██║   ██║██║   ██║██║██║  ██║    ██║  ███╗███████║██║     ███████║
- ╚██╗ ██╔╝██║   ██║██║██║  ██║    ██║   ██║██╔══██║██║     ██╔══██║
-  ╚████╔╝ ╚██████╔╝██║██████╔╝    ╚██████╔╝██║  ██║███████╗██║  ██║
-   ╚═══╝   ╚═════╝ ╚═╝╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-`;
+  // Cada transição dura exatamente 200vh
+  const transitionHeight = window.innerHeight * 2;
+  const maxTransitions = SCREENS.length - 1;
+  const rawTransition = scrollY / transitionHeight;
+  
+  // Limita o index atual para sempre termos a "currentScreen" e "nextScreen"
+  const currentTransitionIndex = Math.min(Math.floor(rawTransition), maxTransitions - 1);
+  const localProgress = Math.min(Math.max(rawTransition - currentTransitionIndex, 0), 1);
+  
+  // Verifica se o usuário chegou no final de todas as transições
+  const isPastEnd = rawTransition >= maxTransitions;
 
-  // O fogo viaja de offset 0.2 (base) até 0.8 (topo). A janela é 0.25.
-  // Calculamos a posição física do fogo na tela (0% a 100%)
-  const effectiveScrollWipe = scrollProgress * 1.25;
+  const currentScreen = SCREENS[currentTransitionIndex];
+  const nextScreen = SCREENS[currentTransitionIndex + 1];
+
+  const effectiveScrollWipe = localProgress * 1.25;
   const fireCenter = effectiveScrollWipe - 0.125;
   const screenWipe = ((fireCenter - 0.2) / 0.6) * 100;
 
   return (
-    <div className="app-container">
-      {/* Seção de Intro com posição Sticky */}
-      <div className="intro-section">
-        <div className="sticky-container">
-          {/* O background escondido com o logo e o texto */}
-          <div className="hidden-background">
-            <pre className="ascii-logo">{voidGalaLogo}</pre>
-            <div className="welcome-text">
-              <p>WELCOME TO THE 2025 VOID_GALA, THE FIRST EDITION OF OUR MANIFESTO. DISCOVER THIS YEAR'S CATEGORIES BELOW.</p>
-            </div>
-          </div>
+    // Altura total: 100vh fixo da primeira tela + (número de transições * 200vh)
+    <div className="app-container" style={{ height: `calc(100vh + ${maxTransitions * 200}vh)` }}>
+      <div className="sticky-container">
+        
+        {/* BOTTOM LAYER: A tela de baixo que está sendo revelada progressivamente */}
+        <div 
+          className="screen-layer layer-bottom" 
+          style={{ 
+            backgroundColor: isPastEnd ? SCREENS[SCREENS.length - 1].bgColor : nextScreen.bgColor, 
+            color: isPastEnd ? SCREENS[SCREENS.length - 1].textColor : nextScreen.textColor 
+          }}
+        >
+          {isPastEnd ? SCREENS[SCREENS.length - 1].content : nextScreen.content}
+        </div>
 
-          {/* Wrapper full-screen que aplica uma máscara de apagamento sincronizada com o fogo. */}
+        {/* MIDDLE LAYER: O conteúdo da tela atual sendo apagado sincronizado com o fogo */}
+        {!isPastEnd && (
           <div 
-            className="letter-wrapper"
-            style={{
+            className="screen-layer layer-middle" 
+            style={{ 
+              backgroundColor: 'transparent',
+              color: currentScreen.textColor,
               WebkitMaskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`,
               maskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`
             }}
           >
-            <div className="letter-container">
-              <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
-              <p>We congratulate the developers who transform limitations into radical innovation. The works listed here are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
-              <p>In this niche, low-level execution is the highest form of art.</p>
-            </div>
+            {currentScreen.content}
           </div>
+        )}
 
-          {/* O grid de caracteres que imitam azulejos. */}
+        {/* TOP LAYER: O grid ASCII que simula o background da tela atual queimando */}
+        {!isPastEnd && (
           <div 
-            className="white-overlay"
+            className="tile-overlay layer-top"
             style={{
               display: 'grid',
               gridTemplateColumns: `repeat(${gridConfig.cols}, ${gridConfig.cellSize}px)`,
-              gridTemplateRows: `repeat(${gridConfig.rows}, ${gridConfig.cellSize}px)`
-            }}
+              gridTemplateRows: `repeat(${gridConfig.rows}, ${gridConfig.cellSize}px)`,
+              // Injetamos as cores como variáveis no CSS para trocar o "corpo" do fogo
+              '--peel-bg-color': currentScreen.bgColor,
+              '--peel-char-color': currentScreen.charColor,
+            } as React.CSSProperties}
           >
             {cells.map(cell => {
-              const effectiveScroll = scrollProgress * 1.25;
-              const localProgress = (effectiveScroll - cell.offset) / 0.25;
-              const clamped = Math.min(Math.max(localProgress, 0), 1);
+              const cellProgress = (effectiveScrollWipe - cell.offset) / 0.25;
+              const clamped = Math.min(Math.max(cellProgress, 0), 1);
               const charIndex = Math.floor(clamped * (TILE_CHARS.length - 1));
               const char = TILE_CHARS[charIndex];
 
@@ -209,22 +260,8 @@ function App() {
               );
             })}
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Conteúdo Principal (Após o Scroll da Intro) */}
-      <div className="main-content">
-        <h2>CATEGORIES</h2>
-        
-        <div className="category">
-          <h3>1. RE_VIRTUAL (Demakes & Retro-Horror)</h3>
-          <p>O auge da estética 32-bit: texturas tremidas, câmeras fixas e horror industrial.</p>
-        </div>
-
-        <div className="category">
-          <h3>2. KERNEL_MASTER (Terminal & ASCII Excellence)</h3>
-          <p>Processamento puro. Onde o código se torna arte sem precisar de um único polígono.</p>
-        </div>
       </div>
     </div>
   );
