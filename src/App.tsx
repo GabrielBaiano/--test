@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import './App.css';
 
 const TILE_CHARS = [
@@ -17,6 +17,8 @@ const voidGalaLogo = `
   ╚████╔╝ ╚██████╔╝██║██████╔╝    ╚██████╔╝██║  ██║███████╗██║  ██║
    ╚═══╝   ╚═════╝ ╚═╝╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
 `;
+
+
 
 // O NOVO SISTEMA: Todas as telas são definidas aqui.
 // O efeito de "peeling" funciona como uma transição contínua entre elas.
@@ -50,40 +52,67 @@ const SCREENS = [
   },
   {
     id: 'category-1',
-    bgColor: '#ff5500', // Laranja vibrante
-    charColor: '#ff5500',
-    textColor: '#ffffff', // Texto branco para contrastar com o laranja
+    bgColor: '#ffffff',
+    charColor: '#ffffff',
+    textColor: '#0033aa',
     content: (
-      <div className="category-screen">
-        <h2 className="cat-title">1. RE_VIRTUAL</h2>
-        <h3 className="cat-subtitle">Demakes & Retro-Horror</h3>
-        <p className="cat-desc">O auge da estética 32-bit: texturas tremidas, câmeras fixas e horror industrial.</p>
-      </div>
-    )
-  },
-  {
-    id: 'category-2',
-    bgColor: '#220000',
-    charColor: '#220000',
-    textColor: '#ff4444',
-    content: (
-      <div className="category-screen">
-        <h2 className="cat-title">2. KERNEL_MASTER</h2>
-        <h3 className="cat-subtitle">Terminal & ASCII Excellence</h3>
-        <p className="cat-desc">Processamento puro. Onde o código se torna arte sem precisar de um único polígono.</p>
-      </div>
-    )
-  },
-  {
-    id: 'category-3',
-    bgColor: '#002211',
-    charColor: '#002211',
-    textColor: '#44ff44',
-    content: (
-      <div className="category-screen">
-        <h2 className="cat-title">3. DITHER_GLORY</h2>
-        <h3 className="cat-subtitle">1-Bit & Brutalist Aesthetics</h3>
-        <p className="cat-desc">A beleza do alto contraste e da limitação binária.</p>
+      <div className="video-showcase">
+        <div className="blueprint-wrapper">
+          {/* Blueprint Lines */}
+          <div className="blueprint-line h-line top"></div>
+          <div className="blueprint-line h-line bottom"></div>
+          <div className="blueprint-line v-line left"></div>
+          <div className="blueprint-line v-line right"></div>
+
+          {/* Crosshairs */}
+          <div className="crosshair top-left">+</div>
+          <div className="crosshair top-right">+</div>
+          <div className="crosshair bottom-left">+</div>
+          <div className="crosshair bottom-right">+</div>
+
+          <div className="video-wrapper">
+            {/* BARRA SUPERIOR (OH MY POSH) */}
+            <div className="posh-bar">
+              <div className="posh-seg" style={{ backgroundColor: '#111111', color: '#ffffff' }}>
+                runner@void
+              </div>
+              <div className="posh-arrow right" style={{ backgroundColor: '#0033aa', color: '#111111' }}></div>
+              <div className="posh-seg" style={{ backgroundColor: '#0033aa', color: '#ffffff' }}>
+                 ~ / media / crow_country 
+              </div>
+              <div className="posh-arrow right" style={{ backgroundColor: '#0055ff', color: '#0033aa' }}></div>
+              <div className="posh-seg" style={{ backgroundColor: '#0055ff', color: '#ffffff' }}>
+                 * play 
+              </div>
+              <div className="posh-arrow right" style={{ backgroundColor: 'transparent', color: '#0055ff' }}></div>
+            </div>
+
+            <iframe
+              className="crow-country-video"
+              src="https://www.youtube.com/embed/1h5qe8eY3wE?autoplay=1&mute=1&loop=1&playlist=1h5qe8eY3wE&controls=0&rel=0"
+              title="Crow Country Trailer"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+
+            {/* BARRA INFERIOR (OH MY POSH) */}
+            <div className="posh-bar" style={{ justifyContent: 'flex-end' }}>
+              <div className="posh-arrow left" style={{ backgroundColor: 'transparent', color: '#0055ff' }}></div>
+              <div className="posh-seg" style={{ backgroundColor: '#0055ff', color: '#ffffff' }}>
+                 1080p 
+              </div>
+              <div className="posh-arrow left" style={{ backgroundColor: '#0055ff', color: '#0033aa' }}></div>
+              <div className="posh-seg" style={{ backgroundColor: '#0033aa', color: '#ffffff' }}>
+                 60FPS 
+              </div>
+              <div className="posh-arrow left" style={{ backgroundColor: '#0033aa', color: '#111111' }}></div>
+              <div className="posh-seg" style={{ backgroundColor: '#111111', color: '#ffffff' }}>
+                 [■] 
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -232,7 +261,7 @@ function App() {
         )}
 
         {/* TOP LAYER: O grid ASCII que simula o background da tela atual queimando */}
-        {!isPastEnd && (
+        {!isPastEnd && !(currentScreen as any).hideOverlay && (
           <div 
             className="tile-overlay layer-top"
             style={{
