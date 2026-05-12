@@ -9,15 +9,15 @@
   width: 100%;
 }
 
-/* O fundo escondido. Fixo na tela, fundo azul estilo azulejo cobalto */
+/* O fundo base. Fixo na tela, fundo azul estilo azulejo cobalto */
 .hidden-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #0033aa; /* Azul profundo característico de azulejos */
-  z-index: 1; /* Fica por baixo da camada branca */
+  background-color: #0033aa; /* Fundo base é azul */
+  z-index: 1; /* Fica por baixo de tudo */
 }
 
 /* =========================================
@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: #ffffff; /* Os caracteres da queima voltam a ser BRANCOS */
   /* Incluindo Fira Code na stack de fontes como solicitado */
   font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
   font-size: 26px; /* Ajustado para preencher perfeitamente os novos blocos de 24px */
@@ -49,5 +49,30 @@
 }
 
 .tile.solid {
-  background-color: #ffffff;
+  background-color: #ffffff; /* O bloco preenchido inicial é branco sólido */
+}
+
+/* O texto da carta fixado no centro */
+.letter-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1000px;
+  text-align: center;
+  font-family: 'Press Start 2P', system-ui, monospace;
+  font-size: clamp(10px, 1.4vw, 18px);
+  line-height: 2;
+  color: #0033aa; 
+  z-index: 15; /* Fica ACIMA da overlay de azulejos brancos (z-index: 10) */
+  pointer-events: none;
+}
+
+.letter-container p {
+  margin-bottom: 2rem;
+}
+
+.letter-container p:last-child {
+  margin-bottom: 0;
 }

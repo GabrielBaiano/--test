@@ -1,73 +1,28 @@
-# React + TypeScript + Vite
+# 🏆 VOID_GALA 2025: O Arquivo Oficial
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Categoria: RE_VIRTUAL (Demakes & Retro-Horror)
+*O auge da estética 32-bit: texturas tremidas, câmeras fixas e horror industrial.*
 
-Currently, two official plugins are available:
+- **Heartworm:** O grande vencedor de 2025. Um survival horror que usa a estética lo-fi do PS1 para explorar a memória e o luto.
+- **Phase Zero:** Action-survival com estética crua de 1996, focado em uma cidade sucumbindo a uma infecção.
+- **CyberCook:** Um crossover bizarro e genial entre simulador de culinária e horror de sobrevivência no estilo PS1.
+- **The Inn-Sanity:** Horror psicológico lançado em Janeiro de 2025 que simula o visual dos primeiros jogos de mistério em 3D.
+- **Amenti:** Um walking sim de horror lançado no início do ano que leva o realismo lo-fi ao limite do desconforto.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 2. Categoria: KERNEL_MASTER (Terminal & ASCII Excellence)
+*Processamento puro. Onde o código se torna arte sem precisar de um único polígono.*
 
-## React Compiler
+- **Effulgence RPG:** Um RPG massivo construído inteiramente em ASCII vibrante que saiu da fase demo para o lançamento completo em 2025.
+- **ABI-DOS:** O ápice dos "programming puzzles" de 2025. Interface de terminal minimalista onde você programa circuitos lógicos.
+- **Ninteenth:** O jogo de estratégia "invisible" de 2025 que roda via comandos SSH, focado em guerra cibernética.
+- **SNAKE Lucky Laugh:** Um experimento estético de Macintosh antigo que viralizou na comunidade indie em Janeiro.
+- **Null-Pointer: The Game:** O jogo oficial do evento (fictício), um simulador de "logística de dados" em um mundo vazio.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 3. Categoria: DITHER_GLORY (1-Bit & Brutalist Aesthetics)
+*A beleza do alto contraste e da limitação binária.*
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Mothership:** Um épico de ficção científica em 1-bit que saiu da obscuridade para o topo das listas indie de 2025.
+- **Tabula:** Um puzzle inovador sobre sobrepor janelas de computador para criar mapas top-down em baixa resolução.
+- **Luminaya:** Jogo de exploração baseado em luz e sombras pixeladas, focado em uma floresta de "terryfing shadows".
+- **Compress(space):** Um puzzle brutalista que usa o espaço vazio como mecânica principal de jogo.
+- **Highway Noir:** Um simulador de direção noturna com estética dithered, focado em ser um motorista de fuga underground.
