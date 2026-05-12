@@ -6,29 +6,41 @@
 /* Criamos um espaço gigante para o scroll fluir com calma */
 .scroll-space {
   height: 600vh;
-  width: 100%;
 }
 
-/* O fundo base. Fixo na tela, fundo azul estilo azulejo cobalto */
+/* =========================================
+   ESTRUTURA DE SCROLL STICKY
+========================================== */
+.intro-section {
+  width: 100%;
+  height: 450vh; /* 100vh visível + 200vh de animação + 150vh de respiro parado */
+}
+
+.sticky-container {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* O fundo base. Ocupa 100% do container sticky */
 .hidden-background {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #0033aa; /* Fundo base é azul */
   z-index: 1; /* Fica por baixo de tudo */
   display: flex;
+  flex-direction: column; /* Empilha o logo e o texto de boas-vindas */
   align-items: center;
   justify-content: center;
 }
 
 /* O logo ASCII no estilo LazyVim revelado pelo fogo */
 .ascii-logo {
-  position: absolute;
-  top: 50%; /* Voltou para o centro absoluto! */
-  left: 50%;
-  transform: translate(-50%, -50%);
   color: #ffffff;
   font-family: "Fira Code", Consolas, "Courier New", Courier, monospace;
   font-size: clamp(6px, 1.2vw, 24px); /* Escala responsivamente para caber na tela */
@@ -39,17 +51,34 @@
   font-weight: bold;
 }
 
+/* Texto de boas vindas abaixo do logo */
+.welcome-text {
+  color: #ffffff;
+  font-family: "Press Start 2P", "Fira Code", monospace; /* Fonte 8-bit para combinar com a estética */
+  font-size: clamp(8px, 0.9vw, 14px);
+  text-align: center;
+  margin-top: 50px;
+  line-height: 2;
+  opacity: 0.9;
+  max-width: 800px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.welcome-text p {
+  margin: 10px 0;
+}
+
 /* =========================================
    A MÁGICA DA CAMADA BRANCA E BOLAS
-========================================== */
+==========================================/* A camada transparente que segura o grid */
 .white-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 10;
-  pointer-events: none; /* Ignora cliques para podermos interagir com o fundo */
+  pointer-events: none;
   overflow: hidden;
 }
 
@@ -71,13 +100,50 @@
   background-color: #ffffff; /* O bloco preenchido inicial é branco sólido */
 }
 
+/* =========================================
+   CONTEÚDO PRINCIPAL (APÓS A INTRO)
+========================================== */
+.main-content {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0033aa; /* Continuação do fundo azul da intro */
+  color: #ffffff;
+  padding: 80px 5%;
+  font-family: "Fira Code", Consolas, monospace;
+  box-sizing: border-box;
+}
+
+.main-content h2 {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(14px, 2vw, 24px);
+  margin-bottom: 60px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.category {
+  margin-bottom: 50px;
+  max-width: 800px;
+}
+
+.category h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #ffcc00; /* Cor de destaque retro */
+}
+
+.category p {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
 /* Wrapper invisível que sincroniza a queima do texto */
 .letter-wrapper {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 15; /* Fica acima da overlay de azulejos brancos */
   pointer-events: none;
 }

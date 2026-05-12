@@ -53,8 +53,9 @@ function App() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
+          // A animação de intro agora é baseada em uma distância fixa de 200vh
+          const introScrollDistance = window.innerHeight * 2;
+          const progress = introScrollDistance > 0 ? scrollY / introScrollDistance : 0;
           setScrollProgress(Math.min(Math.max(progress, 0), 1));
           ticking = false;
         });
@@ -156,63 +157,74 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* O background escondido com o logo no CENTRO */}
-      <div className="hidden-background">
-        <pre className="ascii-logo">{voidGalaLogo}</pre>
-      </div>
+      {/* Seção de Intro com posição Sticky */}
+      <div className="intro-section">
+        <div className="sticky-container">
+          {/* O background escondido com o logo e o texto */}
+          <div className="hidden-background">
+            <pre className="ascii-logo">{voidGalaLogo}</pre>
+            <div className="welcome-text">
+              <p>WELCOME TO THE 2025 VOID_GALA, THE FIRST EDITION OF OUR MANIFESTO. DISCOVER THIS YEAR'S CATEGORIES BELOW.</p>
+            </div>
+          </div>
 
-      {/* Container invisível para dar área de rolagem (scroll) */}
-      <div className="scroll-space"></div>
+          {/* Wrapper full-screen que aplica uma máscara de apagamento sincronizada com o fogo. */}
+          <div 
+            className="letter-wrapper"
+            style={{
+              WebkitMaskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`,
+              maskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`
+            }}
+          >
+            <div className="letter-container">
+              <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
+              <p>We congratulate the developers who transform limitations into radical innovation. The works listed here are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
+              <p>In this niche, low-level execution is the highest form of art.</p>
+            </div>
+          </div>
 
-      {/* Wrapper full-screen que aplica uma máscara de apagamento sincronizada com o fogo.
-          Isso faz com que o texto desapareça EXATAMENTE junto com os quadrados brancos! */}
-      <div 
-        className="letter-wrapper"
-        style={{
-          WebkitMaskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`,
-          maskImage: `linear-gradient(to top, transparent ${screenWipe - 10}%, black ${screenWipe + 15}%)`
-        }}
-      >
-        <div className="letter-container">
-          <p>The VOID_GALA exists to celebrate what the mainstream industry ignores. While the world chases photorealism, we honor the soul of the code.</p>
-          <p>We congratulate the developers who transform limitations into radical innovation. The works listed here are rare: pure manifestos of creativity that prove digital art does not depend on polygons, but on vision.</p>
-          <p>In this niche, low-level execution is the highest form of art.</p>
+          {/* O grid de caracteres que imitam azulejos. */}
+          <div 
+            className="white-overlay"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${gridConfig.cols}, ${gridConfig.cellSize}px)`,
+              gridTemplateRows: `repeat(${gridConfig.rows}, ${gridConfig.cellSize}px)`
+            }}
+          >
+            {cells.map(cell => {
+              const effectiveScroll = scrollProgress * 1.25;
+              const localProgress = (effectiveScroll - cell.offset) / 0.25;
+              const clamped = Math.min(Math.max(localProgress, 0), 1);
+              const charIndex = Math.floor(clamped * (TILE_CHARS.length - 1));
+              const char = TILE_CHARS[charIndex];
+
+              return (
+                <div 
+                  key={cell.id} 
+                  className={`tile ${char === 'solid' ? 'solid' : ''}`}
+                >
+                  {char !== 'solid' && char !== ' ' ? char : null}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 
-        O grid de caracteres que imitam azulejos.
-      */}
-      <div 
-        className="white-overlay"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${gridConfig.cols}, ${gridConfig.cellSize}px)`,
-          gridTemplateRows: `repeat(${gridConfig.rows}, ${gridConfig.cellSize}px)`
-        }}
-      >
-        {cells.map(cell => {
-          // Multiplicamos o scroll por 1.25 para garantir que cubra o offset máximo (0.97) + janela (0.25).
-          const effectiveScroll = scrollProgress * 1.25;
-          
-          // Reduzimos a janela massiva de 0.50 para 0.25.
-          // Isso "espreme" a transição, fazendo com que as faixas de caracteres 
-          // fiquem muito mais finas e afiadas, parecendo uma verdadeira borda de fogo.
-          const localProgress = (effectiveScroll - cell.offset) / 0.25;
-          const clamped = Math.min(Math.max(localProgress, 0), 1);
-          
-          const charIndex = Math.floor(clamped * (TILE_CHARS.length - 1));
-          const char = TILE_CHARS[charIndex];
+      {/* Conteúdo Principal (Após o Scroll da Intro) */}
+      <div className="main-content">
+        <h2>CATEGORIES</h2>
+        
+        <div className="category">
+          <h3>1. RE_VIRTUAL (Demakes & Retro-Horror)</h3>
+          <p>O auge da estética 32-bit: texturas tremidas, câmeras fixas e horror industrial.</p>
+        </div>
 
-          return (
-            <div 
-              key={cell.id} 
-              className={`tile ${char === 'solid' ? 'solid' : ''}`}
-            >
-              {char !== 'solid' && char !== ' ' ? char : null}
-            </div>
-          );
-        })}
+        <div className="category">
+          <h3>2. KERNEL_MASTER (Terminal & ASCII Excellence)</h3>
+          <p>Processamento puro. Onde o código se torna arte sem precisar de um único polígono.</p>
+        </div>
       </div>
     </div>
   );
