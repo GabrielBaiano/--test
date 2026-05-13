@@ -57,6 +57,12 @@ const SCREENS = [
     textColor: '#0033aa',
     content: (
       <div className="video-showcase">
+        <div className="game-info">
+          <h1 className="game-title">DWARF FORTRESS</h1>
+          <p className="game-desc">
+            In development since 2002 by Tarn and Zach Adams, Dwarf Fortress is a monumental achievement in procedural generation and systems design. What began as a simple text-based roguelike has evolved into the most intricate simulation ever conceived. It models everything from geological strata and shifting weather patterns to the individual dreams, memories, and personalities of every generated creature. Abandoning modern graphics for pure, unadulterated complexity, it is a legendary manifesto of low-level emergent storytelling.
+          </p>
+        </div>
         <div className="blueprint-wrapper">
           {/* Blueprint Lines */}
           <div className="blueprint-line h-line top"></div>
@@ -78,7 +84,7 @@ const SCREENS = [
               </div>
               <div className="posh-arrow right" style={{ backgroundColor: '#0033aa', color: '#111111' }}></div>
               <div className="posh-seg" style={{ backgroundColor: '#0033aa', color: '#ffffff' }}>
-                 ~ / media / crow_country 
+                 ~ / media / dwarf_fortress 
               </div>
               <div className="posh-arrow right" style={{ backgroundColor: '#0055ff', color: '#0033aa' }}></div>
               <div className="posh-seg" style={{ backgroundColor: '#0055ff', color: '#ffffff' }}>
@@ -89,7 +95,7 @@ const SCREENS = [
 
             <iframe
               className="crow-country-video"
-              src="https://www.youtube.com/embed/1h5qe8eY3wE?autoplay=1&mute=1&loop=1&playlist=1h5qe8eY3wE&controls=0&rel=0"
+              src="https://www.youtube.com/embed/jNbTQJUAYT0?autoplay=1&mute=1&loop=1&playlist=jNbTQJUAYT0&controls=0&rel=0"
               title="Crow Country Trailer"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
